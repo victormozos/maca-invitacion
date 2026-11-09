@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Un día tú y yo, mami — Gossip Girl Autumn Edition</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons (Fine outline style) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF7F2',
+                        warmBeige: '#F4EBE1',
+                        chocolate: '#2C1D18',
+                        chocolateSoft: '#4A342B',
+                        camel: '#C49A6C',
+                        blush: '#E8C5C8',
+                        burgundy: '#5C1D24',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Strict No-Scroll & App Shell Lock */
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #FAF7F2;
+            color: #2C1D18;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-editorial {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Subtle Card Shadows & Transitions */
+        .card-shadow {
+            box-shadow: 0 8px 24px -4px rgba(44, 29, 24, 0.06);
+        }
+
+        .tab-active {
+            color: #5C1D24 !important;
+            font-weight: 700;
+        }
+        
+        .tab-active-indicator {
+            background-color: #5C1D24;
+        }
+
+        /* Fade Animation for Seamless Tab Switching */
+        .tab-pane {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out;
+        }
+
+        .tab-pane.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* Custom scrollable inner containers if needed on small screens */
+        .inner-scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .inner-scroll::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-full bg-cream text-chocolate selection:bg-blush selection:text-chocolate">
+
+    <!-- TOP REFINED HEADER BAR -->
+    <header class="w-full bg-cream/90 backdrop-blur-md border-b border-warmBeige px-6 py-3 flex items-center justify-between z-20 shrink-0">
+        <span class="text-[11px] uppercase tracking-widest font-semibold text-camel">
+            Autumn Edition · Madrid
+        </span>
+        <span class="text-xs font-serif italic text-burgundy font-semibold">
+            Un día tú y yo, mami
+        </span>
+    </header>
+
+    <!-- MAIN APP SCREEN BODY (FIT TO SCREEN - NO VERTICAL PAGE SCROLL) -->
+    <main class="flex-1 relative overflow-hidden flex flex-col w-full max-w-lg mx-auto">
+
+        <!-- 1. TAB: INICIO -->
+        <section id="tab-inicio" class="tab-pane active flex-col justify-between p-6 h-full w-full inner-scroll">
+            <div class="flex flex-col items-center text-center my-auto">
+                <span class="px-3 py-1 rounded-full bg-warmBeige text-[11px] font-semibold text-burgundy tracking-wide uppercase mb-4 border border-blush/60">
+                    Invitación Privada
+                </span>
+
+                <h1 class="text-3xl sm:text-4xl font-bold font-editorial text-chocolate leading-tight mb-3">
+                    Un día tú y yo, mami
+                </h1>
+
+                <p class="text-sm font-serif italic text-camel font-medium mb-6">
+                    Sábado 14 de Noviembre de 2026 · Madrid
+                </p>
+
+                <div class="w-12 h-[1px] bg-camel/40 mb-6"></div>
+
+                <p class="text-xs sm:text-sm text-chocolateSoft max-w-xs leading-relaxed mb-8">
+                    "Mami, ponte mona. Yo me encargo de absolutamente todo el plan. Sin prisas, compritas y cafecitos."
+                </p>
+
+                <!-- REAL-TIME COUNTDOWN CARD -->
+                <div class="w-full bg-white rounded-2xl p-5 card-shadow border border-warmBeige">
+                    <p class="text-[10px] uppercase tracking-widest font-bold text-camel mb-3">
+                        Cuenta atrás para nuestro día
+                    </p>
+                    <div id="countdown" class="grid grid-cols-4 gap-2 text-center">
+                        <div class="bg-cream rounded-xl p-2 border border-warmBeige">
+                            <span id="days" class="text-xl font-bold font-editorial text-chocolate">--</span>
+                            <span class="block text-[9px] uppercase font-semibold text-chocolateSoft mt-0.5">Días</span>
+                        </div>
+                        <div class="bg-cream rounded-xl p-2 border border-warmBeige">
+                            <span id="hours" class="text-xl font-bold font-editorial text-chocolate">--</span>
+                            <span class="block text-[9px] uppercase font-semibold text-chocolateSoft mt-0.5">Horas</span>
+                        </div>
+                        <div class="bg-cream rounded-xl p-2 border border-warmBeige">
+                            <span id="minutes" class="text-xl font-bold font-editorial text-chocolate">--</span>
+                            <span class="block text-[9px] uppercase font-semibold text-chocolateSoft mt-0.5">Mins</span>
+                        </div>
+                        <div class="bg-cream rounded-xl p-2 border border-warmBeige">
+                            <span id="seconds" class="text-xl font-bold font-editorial text-chocolate">--</span>
+                            <span class="block text-[9px] uppercase font-semibold text-chocolateSoft mt-0.5">Segs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 text-center">
+                <button onclick="switchTab('plan')" class="w-full py-3.5 rounded-xl bg-chocolate text-cream font-medium text-xs tracking-wider uppercase shadow hover:bg-burgundy transition-all duration-200">
+                    Explorar el plan <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. TAB: EL PLAN -->
+        <section id="tab-plan" class="tab-pane flex-col justify-between p-6 h-full w-full inner-scroll">
+            <div class="w-full">
+                <div class="text-center mb-6">
+                    <span class="text-[10px] font-semibold tracking-widest text-camel uppercase">Ritmo del Día</span>
+                    <h2 class="text-2xl font-editorial font-bold text-chocolate mt-1">El Plan Relajado</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 card-shadow border border-warmBeige mb-5">
+                    <p class="text-xs text-chocolateSoft leading-relaxed font-medium">
+                        <i class="fa-solid fa-clock text-camel mr-1.5"></i>
+                        Llegas sobre las 07:00 en avión. Estaremos en casa hacia las 08:00. De <strong>08:00 a 11:30</strong> dormiremos un poco para descansar. A las 11:30 nos arreglamos y salimos con calma.
+                    </p>
+                </div>
+
+                <!-- CONCISE HORARY SUMMARY LIST -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">11:30 – 13:00</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Arreglarnos y salir tranquilas</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">13:00</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Primer café en Chueca</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">13:30 – 15:15</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Shopping por Fuencarral</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">15:30 – 16:45</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Comida tranquila en Chamberí</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">16:45 – 17:30</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Paseo hacia Salamanca</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">17:30 – 18:45</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Shopping en Serrano</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige text-xs">
+                        <span class="font-editorial font-bold text-burgundy w-24">18:45 – 19:30</span>
+                        <span class="text-chocolate font-medium text-right flex-1">Café final & vuelta a casa</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button onclick="switchTab('ruta')" class="w-full py-3.5 rounded-xl bg-chocolate text-cream font-medium text-xs tracking-wider uppercase shadow hover:bg-burgundy transition-all duration-200">
+                    Ver las paradas <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. TAB: RUTA INTERACTIVA POR TOUCH -->
+        <section id="tab-ruta" class="tab-pane flex-col justify-between p-6 h-full w-full inner-scroll">
+            <div class="w-full">
+                <div class="text-center mb-4">
+                    <span class="text-[10px] font-semibold tracking-widest text-camel uppercase">Recorrido Madrid</span>
+                    <h2 class="text-2xl font-editorial font-bold text-chocolate mt-0.5">Las 6 Paradas</h2>
+                </div>
+
+                <!-- TOUCH HORIZONTAL SELECTOR BUTTONS -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-4 inner-scroll">
+                    <button onclick="showStop(1)" id="stop-btn-1" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-burgundy text-white text-xs font-bold transition-all">1</button>
+                    <button onclick="showStop(2)" id="stop-btn-2" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all">2</button>
+                    <button onclick="showStop(3)" id="stop-btn-3" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all">3</button>
+                    <button onclick="showStop(4)" id="stop-btn-4" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all">4</button>
+                    <button onclick="showStop(5)" id="stop-btn-5" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all">5</button>
+                    <button onclick="showStop(6)" id="stop-btn-6" class="stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all">6</button>
+                </div>
+
+                <!-- STOP DISPLAY CARD -->
+                <div class="bg-white rounded-2xl overflow-hidden card-shadow border border-warmBeige">
+                    <div id="stop-image" class="w-full h-36 bg-cover bg-center transition-all duration-300" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop');"></div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <span id="stop-time" class="text-[10px] font-bold text-burgundy bg-blush/40 px-2.5 py-0.5 rounded-full">13:00</span>
+                            <span id="stop-tag" class="text-[10px] font-semibold text-camel uppercase">Parada 1 · Chueca</span>
+                        </div>
+
+                        <h3 id="stop-title" class="text-xl font-editorial font-bold text-chocolate mb-1">Bucólico Café</h3>
+                        <p id="stop-address" class="text-[11px] text-chocolateSoft font-medium mb-3">
+                            <i class="fa-solid fa-location-dot text-burgundy mr-1"></i> Calle de Barbieri, 4, Madrid
+                        </p>
+                        
+                        <p id="stop-desc" class="text-xs text-chocolateSoft leading-relaxed mb-4 min-h-[48px]">
+                            Nuestra primera parada para tomar un café bonito, un americano riquísimo y algo ligero para acompañar. Ambiente acogedor.
+                        </p>
+
+                        <a id="stop-map-link" href="https://maps.google.com/?q=Bucolico+Cafe+Calle+de+Barbieri+4+Madrid" target="_blank" rel="noopener" 
+                           class="w-full py-2.5 rounded-xl bg-warmBeige hover:bg-blush text-chocolate text-xs font-semibold flex items-center justify-center gap-2 transition-colors">
+                            <i class="fa-solid fa-map-pin text-burgundy"></i>
+                            <span>Abrir ubicación en Google Maps</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3">
+                <button onclick="switchTab('checklist')" class="w-full py-3.5 rounded-xl bg-chocolate text-cream font-medium text-xs tracking-wider uppercase shadow hover:bg-burgundy transition-all duration-200">
+                    Checklist de cosas <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. TAB: CHECKLIST INTERACTIVA -->
+        <section id="tab-checklist" class="tab-pane flex-col justify-between p-6 h-full w-full inner-scroll">
+            <div class="w-full">
+                <div class="text-center mb-5">
+                    <span class="text-[10px] font-semibold tracking-widest text-camel uppercase">Preparativos</span>
+                    <h2 class="text-2xl font-editorial font-bold text-chocolate mt-0.5">Checklist para mami</h2>
+                </div>
+
+                <!-- PROGRESS BAR -->
+                <div class="bg-white rounded-2xl p-4 card-shadow border border-warmBeige mb-5">
+                    <div class="flex justify-between items-center text-xs font-semibold text-chocolate mb-2">
+                        <span>Estado del equipaje:</span>
+                        <span id="progress-percent" class="text-burgundy font-bold">0%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-cream rounded-full overflow-hidden border border-warmBeige">
+                        <div id="progress-bar" class="h-full bg-camel transition-all duration-300 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- CHECKLIST ITEMS -->
+                <div class="space-y-2.5" id="checklist-items">
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Abrigo bonito & elegante</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Zapatos cómodos para caminar</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Bolso favorito</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Gafas de sol</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Paraguas por si acaso</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-white border border-warmBeige cursor-pointer text-xs font-medium text-chocolate">
+                        <span>Móvil cargado para fotos</span>
+                        <input type="checkbox" class="w-4 h-4 accent-burgundy rounded" onchange="updateProgress()">
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-3">
+                <button onclick="switchTab('confirmar')" class="w-full py-3.5 rounded-xl bg-chocolate text-cream font-medium text-xs tracking-wider uppercase shadow hover:bg-burgundy transition-all duration-200">
+                    Confirmar asistencia <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 5. TAB: CONFIRMAR (RSVP) -->
+        <section id="tab-confirmar" class="tab-pane flex-col justify-between p-6 h-full w-full inner-scroll">
+            <div class="my-auto text-center w-full">
+                <div class="bg-white rounded-3xl p-6 card-shadow border border-warmBeige">
+                    <h2 class="text-3xl font-editorial font-bold text-chocolate mb-3">
+                        Te quiero, mami
+                    </h2>
+                    
+                    <div class="w-10 h-[1px] bg-camel/40 mx-auto mb-4"></div>
+
+                    <p class="text-xs sm:text-sm text-chocolateSoft leading-relaxed font-serif italic mb-6">
+                        "No hace falta ninguna ocasión especial. Solo quería pasar un día contigo. Cafecitos, compritas, cotilleos y tiempo juntas. Porque al final, lo mejor del plan es que es contigo."
+                    </p>
+
+                    <div id="rsvp-container">
+                        <button id="rsvp-btn" onclick="confirmRSVP()" 
+                                class="w-full py-4 rounded-xl bg-burgundy text-cream font-bold text-xs tracking-wider uppercase shadow-lg hover:bg-chocolate transition-all duration-200">
+                            ¡OBVIO QUE SÍ! ♡
+                        </button>
+                    </div>
+
+                    <div id="rsvp-confirmed" class="hidden p-4 bg-cream rounded-2xl border border-camel/40">
+                        <h3 class="text-lg font-editorial font-bold text-chocolate mb-1">¡PLANAZO CONFIRMADO!</h3>
+                        <p class="text-xs text-chocolateSoft font-medium">Te quiero muchísimo, mami. 🤎</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3 text-center">
+                <span class="text-[10px] font-serif italic text-camel">XOXO, Gossip Girl Autumn Edition</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FIXED BOTTOM TAB BAR (TOUCH APP NAVIGATION) -->
+    <nav class="w-full bg-white border-t border-warmBeige px-2 py-2 shrink-0 z-30">
+        <div class="max-w-md mx-auto flex items-center justify-around">
+            
+            <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-tab flex flex-col items-center py-1 px-3 text-chocolateSoft transition-colors tab-active">
+                <i class="fa-solid fa-house text-base mb-0.5"></i>
+                <span class="text-[10px] font-medium">Inicio</span>
+            </button>
+
+            <button onclick="switchTab('plan')" id="nav-plan" class="nav-tab flex flex-col items-center py-1 px-3 text-chocolateSoft transition-colors">
+                <i class="fa-solid fa-calendar-day text-base mb-0.5"></i>
+                <span class="text-[10px] font-medium">El Plan</span>
+            </button>
+
+            <button onclick="switchTab('ruta')" id="nav-ruta" class="nav-tab flex flex-col items-center py-1 px-3 text-chocolateSoft transition-colors">
+                <i class="fa-solid fa-map-location-dot text-base mb-0.5"></i>
+                <span class="text-[10px] font-medium">Ruta</span>
+            </button>
+
+            <button onclick="switchTab('checklist')" id="nav-checklist" class="nav-tab flex flex-col items-center py-1 px-3 text-chocolateSoft transition-colors">
+                <i class="fa-solid fa-list-check text-base mb-0.5"></i>
+                <span class="text-[10px] font-medium">Checklist</span>
+            </button>
+
+            <button onclick="switchTab('confirmar')" id="nav-confirmar" class="nav-tab flex flex-col items-center py-1 px-3 text-chocolateSoft transition-colors">
+                <i class="fa-solid fa-heart text-base mb-0.5"></i>
+                <span class="text-[10px] font-medium">Confirmar</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- INTERACTIVE SCRIPT LOGIC -->
+    <script>
+        // 1. TAB SWITCHING SYSTEM
+        function switchTab(tabId) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            // Reset tab button states
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.classList.remove('tab-active');
+            });
+
+            // Activate selected tab pane & button
+            const selectedPane = document.getElementById(`tab-${tabId}`);
+            if (selectedPane) selectedPane.classList.add('active');
+
+            const selectedNav = document.getElementById(`nav-${tabId}`);
+            if (selectedNav) selectedNav.classList.add('tab-active');
+        }
+
+        // 2. REAL-TIME COUNTDOWN
+        const targetDate = new Date("November 14, 2026 00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById("countdown").innerHTML = "<p class='col-span-4 text-chocolate font-bold py-1 text-xs'>¡Llegó nuestro día especial! 🤎</p>";
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 3. STOP DATA & SWITCHING
+        const stopsData = {
+            1: {
+                tag: "Parada 1 · Chueca",
+                time: "13:00",
+                title: "Bucólico Café",
+                address: "Calle de Barbieri, 4, Madrid",
+                desc: "Nuestra primera parada para tomar un café bonito, un americano riquísimo y algo ligero para acompañar. Ambiente cálido y acogedor.",
+                image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Bucolico+Cafe+Calle+de+Barbieri+4+Madrid"
+            },
+            2: {
+                tag: "Parada 2 · Shopping",
+                time: "13:30 – 15:15",
+                title: "Calle Fuencarral",
+                address: "Calle de Fuencarral, Madrid",
+                desc: "Paseo por la Calle Fuencarral: boutiques independientes, Zara, tiendas de ropa y accesorios. Sin pisar Gran Vía.",
+                image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Calle+de+Fuencarral+Madrid"
+            },
+            3: {
+                tag: "Parada 3 · Chamberí",
+                time: "15:30 – 16:45",
+                title: "Restaurante Santancha",
+                address: "Calle de Santa Engracia, 41, Madrid",
+                desc: "Comida mediterránea moderna, platillos ideales para compartir y sobremesa muy agradable en un sitio bonito.",
+                image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Santancha+Calle+de+Santa+Engracia+41+Madrid"
+            },
+            4: {
+                tag: "Parada 4 · Paseo",
+                time: "16:45 – 17:30",
+                title: "Paseo a Salamanca",
+                address: "De Chamberí a Serrano, Madrid",
+                desc: "Caminaremos tranquilas disfrutando del ambiente otoñal. Si notamos cansancio, pediremos un taxi directamente.",
+                image: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Barrio+de+Salamanca+Madrid"
+            },
+            5: {
+                tag: "Parada 5 · Barrio Salamanca",
+                time: "17:30 – 18:45",
+                title: "Shopping en Serrano",
+                address: "Calle de Serrano, Madrid",
+                desc: "Vibe Lily van der Woodsen: tiendas elegantes, Mango, Zara y escaparates preciosos por la zona de Serrano.",
+                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Calle+de+Serrano+Madrid"
+            },
+            6: {
+                tag: "Parada 6 · Café Final",
+                time: "18:45 – 19:30",
+                title: "Delphina Café",
+                address: "Calle de Serrano, 84, Madrid",
+                desc: "Última parada para tomar un café calentito y compartir algún dulce antes de volver a casa sobre las 19:30-20:00.",
+                image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=800&auto=format&fit=crop",
+                map: "https://maps.google.com/?q=Delphina+Cafe+Calle+de+Serrano+84+Madrid"
+            }
+        };
+
+        function showStop(stopNum) {
+            const data = stopsData[stopNum];
+            if (!data) return;
+
+            document.getElementById('stop-tag').innerText = data.tag;
+            document.getElementById('stop-time').innerText = data.time;
+            document.getElementById('stop-title').innerText = data.title;
+            document.getElementById('stop-address').innerHTML = `<i class="fa-solid fa-location-dot text-burgundy mr-1"></i> ${data.address}`;
+            document.getElementById('stop-desc').innerText = data.desc;
+            document.getElementById('stop-image').style.backgroundImage = `url('${data.image}')`;
+            document.getElementById('stop-map-link').href = data.map;
+
+            // Highlight active button
+            const navBtns = document.querySelectorAll('.stop-nav-btn');
+            navBtns.forEach((btn, index) => {
+                if (index + 1 === stopNum) {
+                    btn.className = "stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-burgundy text-white text-xs font-bold transition-all";
+                } else {
+                    btn.className = "stop-nav-btn flex-1 min-w-[42px] py-2 rounded-lg bg-white border border-warmBeige text-chocolate text-xs font-bold transition-all";
+                }
+            });
+        }
+
+        // 4. CHECKLIST PROGRESS
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+            const total = checkboxes.length;
+            let checked = 0;
+
+            checkboxes.forEach(box => {
+                if (box.checked) checked++;
+            });
+
+            const percentage = Math.round((checked / total) * 100);
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-percent').innerText = percentage + '%';
+
+            if (percentage === 100 && typeof confetti === 'function') {
+                confetti({
+                    particleCount: 40,
+                    spread: 50,
+                    origin: { y: 0.7 },
+                    colors: ['#C49A6C', '#E8C5C8', '#5C1D24']
+                });
+            }
+        }
+
+        // 5. RSVP CONFIRMATION
+        function confirmRSVP() {
+            document.getElementById('rsvp-container').classList.add('hidden');
+            document.getElementById('rsvp-confirmed').classList.remove('hidden');
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#C49A6C', '#5C1D24', '#E8C5C8', '#2C1D18']
+                });
+            }
+        }
+    </script>
+</body>
+</html>
